@@ -2,9 +2,6 @@ module github.com/alpstable/gmongo
 
 go 1.19
 
-// Remove this
-replace github.com/alpstable/gidari => /Users/prestonvasquez/Developer/gidari
-
 require (
 	github.com/alpstable/gidari v0.0.0-20221030223101-0562042f4484
 	go.mongodb.org/mongo-driver v1.10.3
