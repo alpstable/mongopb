@@ -29,7 +29,7 @@ func main() {
 	mdbStorage, _ := gmongo.New(ctx, client)
 
 	// Include the adapter in the storage slice of the transport configuration.
-	err := gidari.Transport(ctx, &config.Config{
+	err := gidari.Transport(ctx, &gidari.Config{
 		Storage: []Storage{mdbStorage},
 	})
 }
