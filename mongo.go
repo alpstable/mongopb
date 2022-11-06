@@ -296,8 +296,8 @@ func (m *Mongo) ListTables(ctx context.Context) (*proto.ListTablesResponse, erro
 			if err != nil {
 				// If we error because the collection is a view, then just skip the error and continue
 				// on with the loop.
-				var cmdError *mongo.CommandError
-				if isErr := errors.As(err, cmdError); isErr && cmdError != nil {
+				var cmdError mongo.CommandError
+				if isErr := errors.As(err, &cmdError); isErr {
 					if cmdError.HasErrorCode(commandNotSupportedOnViewErrorCode) {
 						continue
 					}
