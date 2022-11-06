@@ -31,3 +31,10 @@ lint:
 tests:
 	$(GC) clean -testcache
 	go test -v -count=5 ./...
+
+# ci runs the tests with a ci container
+.PHONY: ci
+ci:
+	chmod +rwx scripts/*.sh
+	$(GC) clean -testcache
+	./scripts/run-ci-tests.sh

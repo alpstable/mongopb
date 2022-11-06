@@ -21,4 +21,4 @@ jobs:
       run: make containers
 
     - name: Run Test
-      run: make tests
+      run: make ci

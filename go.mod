@@ -3,8 +3,8 @@ module github.com/alpstable/gmongo
 go 1.19
 
 require (
-	github.com/alpstable/gidari v0.0.0-20221030223101-0562042f4484
-	go.mongodb.org/mongo-driver v1.10.3
+	github.com/alpstable/gidari v0.0.0-20221106191643-d53cdac2d61f
+	go.mongodb.org/mongo-driver v1.11.0
 	golang.org/x/sync v0.1.0
 	google.golang.org/protobuf v1.28.1
 )
