@@ -5,13 +5,13 @@ networks:
     driver: bridge
 
 services:
-  integration:
+  ci:
     build:
       context: .
-      dockerfile: integration.Dockerfile
+      dockerfile: docker/ci.Dockerfile
     networks:
       - mongo_network
-
+      
   mongo1:
     hostname: mongo1
     image: mongo

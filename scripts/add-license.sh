@@ -5,7 +5,7 @@ declare -a EXCLUDE_LIST=()
 
 # LICENSE_TEMPLATE is the license notice to prepend to files.
 LICENSE_TEMPLATE=$(cat <<EOF
-// Copyright 2022 The GMongo Authors.
+// Copyright 2022 The Gidari Mongo Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ for file in $(find . -name "*.go" -type f); do
     	fi
 
     	# skip files that already have the LICENSE_TEMPLATE
-    	if grep -q "Copyright 2022 The Gidari Authors." "${file}"; then
+    	if grep -q "Copyright 2022 The Gidari Mongo Authors." "${file}"; then
 		continue
     	fi
 
