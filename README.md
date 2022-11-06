@@ -27,7 +27,7 @@ func main() {
 	ctx := context.TODO()
 
 	// Create a MongoDB client using the official MongoDB Go Driver.
-	clientOptions := options.Client().ApplyURI("mongodb://mongo1:27017/defaultdb")
+	clientOptions := options.Client().ApplyURI("mongodb://mongo1:27017")
 	client, _ := mongo.Connect(ctx, clientOptions)
 
 	// Plug the client into a Gidari MongoDB Storage adapater.
@@ -36,7 +36,7 @@ func main() {
 	// Include the adapter in the storage slice of the transport configuration.
 	err := gidari.Transport(ctx, &gidari.Config{
 		StorageOptions: []StorageOptions{
-			{Storage: mdbStorage},
+			{Storage: mdbStorage, Database: "defaultdb"},
 		},
 	})
 }
