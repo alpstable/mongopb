@@ -22,7 +22,7 @@ import (
 
 const defaultCollection = "defaultcoll"
 
-func testClient(t *testing.T, ctx context.Context, connString string) *mongo.Client {
+func testClient(ctx context.Context, t *testing.T, connString string) *mongo.Client {
 	t.Helper()
 
 	clientOptions := options.Client().ApplyURI(connString)
@@ -35,10 +35,10 @@ func testClient(t *testing.T, ctx context.Context, connString string) *mongo.Cli
 	return client
 }
 
-func defaultTestClient(t *testing.T, ctx context.Context) *mongo.Client {
+func defaultTestClient(ctx context.Context, t *testing.T) *mongo.Client {
 	t.Helper()
 
-	return testClient(t, ctx, fmt.Sprintf("mongodb://mongo1:27017/%s", defaultCollection))
+	return testClient(ctx, t, fmt.Sprintf("mongodb://mongo1:27017/%s", defaultCollection))
 }
 
 func TestMongo(t *testing.T) {
@@ -55,7 +55,7 @@ func TestMongo(t *testing.T) {
 
 	ctx := context.Background()
 
-	mongo, err := New(ctx, defaultTestClient(t, ctx))
+	mongo, err := New(ctx, defaultTestClient(ctx, t))
 	if err != nil {
 		t.Fatalf("failed to connect to the database: %v", err)
 	}
@@ -66,7 +66,8 @@ func TestMongo(t *testing.T) {
 				{
 					Name: "close mongo",
 					OpenFn: func() proto.Storage {
-						stg, _ := New(ctx, defaultTestClient(t, ctx))
+						stg, _ := New(ctx, defaultTestClient(ctx, t))
+
 						return stg
 					},
 				},
@@ -150,7 +151,8 @@ func TestMongo(t *testing.T) {
 				{
 					Name: "check Trucate function",
 					OpenFn: func() proto.Storage {
-						stg, _ := New(ctx, defaultTestClient(t, ctx))
+						stg, _ := New(ctx, defaultTestClient(ctx, t))
+
 						return stg
 					},
 				},
@@ -170,7 +172,7 @@ func TestMongoDBTxn(t *testing.T) {
 		const tolerance = 5_000
 
 		ctx := context.Background()
-		mdb, err := New(ctx, testClient(t, ctx, fmt.Sprintf("mongodb://mongo1:27017/%s", database)))
+		mdb, err := New(ctx, testClient(ctx, t, fmt.Sprintf("mongodb://mongo1:27017/%s", database)))
 		if err != nil {
 			t.Fatalf("failed to create mongo client: %v", err)
 		}

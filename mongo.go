@@ -39,6 +39,7 @@ var (
 	ErrDNSNotSupported       = fmt.Errorf("dns is not supported")
 	ErrTransactionAborted    = fmt.Errorf("transaction aborted")
 	ErrNotImplemented        = fmt.Errorf("not implemented")
+	ErrFailedToListDatabases = fmt.Errorf("failed to list databases")
 )
 
 // Mongo is a wrapper for *mongo.Client, use to perform CRUD operations on a mongo DB instance.
@@ -276,7 +277,7 @@ func (m *Mongo) ListPrimaryKeys(ctx context.Context) (*proto.ListPrimaryKeysResp
 func (m *Mongo) ListTables(ctx context.Context) (*proto.ListTablesResponse, error) {
 	dbresults, err := m.Client.ListDatabases(ctx, bson.D{})
 	if err != nil {
-		return nil, fmt.Errorf("failed to list databases")
+		return nil, fmt.Errorf("%v %w", ErrFailedToListDatabases, err)
 	}
 
 	rsp := &proto.ListTablesResponse{TableSet: make(map[string]*proto.Table)}
@@ -293,11 +294,13 @@ func (m *Mongo) ListTables(ctx context.Context) (*proto.ListTablesResponse, erro
 				primitive.E{Key: "collStats", Value: collection},
 			}).DecodeBytes()
 			if err != nil {
-				// If we error because the collection is a view, then just skip the error and continue on with the
-				// loop.
-				cmdErr, ok := err.(mongo.CommandError)
-				if ok && cmdErr.HasErrorCode(commandNotSupportedOnViewErrorCode) {
-					continue
+				// If we error because the collection is a view, then just skip the error and continue
+				// on with the loop.
+				var cmdError *mongo.CommandError
+				if isErr := errors.As(err, cmdError); isErr && cmdError != nil {
+					if cmdError.HasErrorCode(commandNotSupportedOnViewErrorCode) {
+						continue
+					}
 				}
 
 				return nil, fmt.Errorf("failed to get collection stats: %w", err)
