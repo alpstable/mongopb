@@ -9,4 +9,4 @@
 package mongopb
 
 // Version is the version of the mongopb package.
-const Version = "0.1.0"
+const Version = "0.2.0-prerelease"
