@@ -66,10 +66,8 @@ func decodeJSONForTest(t *testing.T, data []byte) (*structpb.ListValue, error) {
 	return records, nil
 }
 
-//nolint:tparallel
+//nolint:paralleltest
 func TestListWriter(t *testing.T) {
-	t.Parallel()
-
 	// Create a client and ping it.
 	ctx := context.Background()
 
